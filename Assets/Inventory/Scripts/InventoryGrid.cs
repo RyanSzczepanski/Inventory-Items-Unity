@@ -9,7 +9,7 @@ public class InventoryGrid
     private static GameObject row;
     private static GameObject inv;
     private static GameObject miniInv;
-    private static GameObject item;
+    public static GameObject item;
 
     public static void Init(GameObject _slot, GameObject _item, GameObject _row, GameObject _inv, GameObject _miniInv)
     {
@@ -81,10 +81,6 @@ public class InventoryGrid
                 foreach (KeyValuePair<int, Item> item in items)
                 {
                     GameObject uiInventoryItemObject = GameObject.Instantiate(InventoryGrid.item, itemContainer.transform);
-                    if (item.Value.itemData.texture is not null)
-                    {
-                        uiInventoryItemObject.GetComponent<Image>().sprite = item.Value.itemData.texture;
-                    }
                     
                     UIInventoryItem newUIInventoryItem;
                     

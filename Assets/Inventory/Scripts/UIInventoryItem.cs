@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class UIInventoryItem : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginDragHandler, IEndDragHandler
 {
-    GameObject temp;
+    GameObject dragObj;
+
+    GameObject itemImage;
+    GameObject backgroundImage;
 
     public Item item;
     private Inventory inventory;
@@ -17,6 +20,8 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IPointerClickHandler
         this.item = item;
         this.subInventory = subInventory;
         this.inventory = inventory;
+        this.backgroundImage = transform.GetChild(0).gameObject;
+        this.itemImage = transform.GetChild(1).gameObject;
         int[] occupiedSlotIndexes = subInventory.GetItemsSlots(item, originSlotIndex);
         Slot[] occupiedSlots = new Slot[occupiedSlotIndexes.Length];
         for (int i = 0; i < occupiedSlotIndexes.Length; i++)
@@ -26,6 +31,8 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IPointerClickHandler
         Vector2 originSlot = new Vector2(occupiedSlotIndexes[0] - Mathf.Floor((float)occupiedSlotIndexes[0] / (float)subInventory.width) * subInventory.width, Mathf.Floor((float)occupiedSlotIndexes[0] / subInventory.width));
         GetComponent<RectTransform>().anchoredPosition = new Vector2(originSlot.x * Slot.SlotWidth + (Slot.SlotWidth / 2) * item.itemData.size.x, originSlot.y * -Slot.SlotWidth - (Slot.SlotWidth / 2) * item.itemData.size.y);
         GetComponent<RectTransform>().sizeDelta = Slot.SlotWidth * item.itemData.size;
+
+        itemImage.GetComponent<Image>().sprite = this.item.itemData.texture;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -50,7 +57,7 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IPointerClickHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        temp.transform.position = eventData.position - new Vector2(this.transform.GetComponent<RectTransform>().rect.width - Slot.SlotWidth * item.itemData.size.x, -this.transform.GetComponent<RectTransform>().rect.height + Slot.SlotWidth * item.itemData.size.y) / (2 / GetComponentInParent<Canvas>().scaleFactor);
+        dragObj.transform.position = eventData.position - new Vector2(this.transform.GetComponent<RectTransform>().rect.width - Slot.SlotWidth * item.itemData.size.x, -this.transform.GetComponent<RectTransform>().rect.height + Slot.SlotWidth * item.itemData.size.y) / (2 / GetComponentInParent<Canvas>().scaleFactor);
 
         UISubInventory targetSubInventory = GetSubInventoryUnderMouse(eventData);
         if(targetSubInventory is not null)
@@ -61,19 +68,19 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IPointerClickHandler
             Vector2Int slot = new Vector2Int((int)Mathf.Clamp(Mathf.Floor(localHoverItemPositon.x / Slot.SlotWidth), 0, targetSubInventory.subInventory.width - item.itemData.size.x), (int)Mathf.Clamp(Mathf.Floor((-localHoverItemPositon.y) / Slot.SlotWidth), 0, targetSubInventory.subInventory.height - item.itemData.size.y));
             Vector2 slotPosition = new Vector2(slot.x * Slot.SlotWidth + Slot.SlotWidth / 2 * item.itemData.size.x, slot.y * -Slot.SlotWidth - Slot.SlotWidth / 2 * item.itemData.size.y);
             
-            temp.transform.position = (Vector2)targetSubInventory.transform.position + slotPosition * GetComponentInParent<Canvas>().scaleFactor;
+            dragObj.transform.position = (Vector2)targetSubInventory.transform.position + slotPosition * GetComponentInParent<Canvas>().scaleFactor;
         }
 
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        temp = Utils.InstantiateToCanvas(this.gameObject);
+        dragObj = Utils.InstantiateToCanvas(this.gameObject);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Destroy(temp);
+        Destroy(dragObj);
         UISubInventory targetSubInventory = GetSubInventoryUnderMouse(eventData);
         if (targetSubInventory is not null)
         {
