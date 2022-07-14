@@ -60,6 +60,7 @@ public class InventoryGrid
                     //UI
                     GameObject slotObject = GameObject.Instantiate(slot, slotsContainer.transform);
                     slotObject.name = "Slot";
+                    slotObject.transform.parent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(Slot.SlotWidth, Slot.SlotWidth);
 
                     //Component
                     UISlot UISlot = slotObject.AddComponent<UISlot>();
@@ -69,7 +70,8 @@ public class InventoryGrid
                     if (currentSlot.item is null) { continue; }
                     if (items.ContainsValue(currentSlot.item))
                     {
-                        Debug.Log("Duplicate");
+                       //Duplicate not neccesarily bad
+                       //Code gets here for multi-slot items
                         continue;
                     }
                     items.Add(i, currentSlot.item);
