@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94f6e04b538cb754ab4c1005ad567aba, type: 3}
-  m_Name: Container Item
+  m_Name: G99 T20 SPLAV
   m_EditorClassIdentifier: 
   texture: {fileID: 21300000, guid: 73ce740b2d7fd2a47a89d139f91c359e, type: 3}
   itemPrefab: {fileID: 0}
   worldPrefab: {fileID: 0}
   type: 16
-  fullName: Container Item
-  shortName: Container
+  fullName: G99 T20 SPLAV
+  shortName: T20
   weight: 5
-  size: {x: 2, y: 2}
-  miniInventories:
-  - {x: 20, y: 20}
+  size: {x: 5, y: 5}
   containerInventory:
     rows:
     - columns:

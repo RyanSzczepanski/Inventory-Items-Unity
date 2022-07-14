@@ -37,9 +37,9 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IPointerClickHandler
                 item.OpenContextMenu();
                 break;
             case PointerEventData.InputButton.Middle:
-                Debug.Log(item.itemData.name);
-                Debug.Log(item.itemData.size);
-                Debug.Log(item.itemData.weight);
+                Debug.Log($"{item.itemData.name}\n" +
+                    $"{item.itemData.weight} kg\n" +
+                    $"{item.itemData.size}");
                 break;
             case PointerEventData.InputButton.Right:
                 subInventory.RemoveItem(item);
