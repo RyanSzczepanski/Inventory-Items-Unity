@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Container", menuName = "Assets/Container")]
 public class ContainerItemSO : ItemSO
 {
-    public Vector2Int[] miniInventories;
+    //public Vector2Int[] miniInventories;
     public ContainerInventory containerInventory;
 
     public override Item CreateItem()
