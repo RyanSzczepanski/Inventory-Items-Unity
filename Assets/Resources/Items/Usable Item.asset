@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6422bed8e79c2bb4e9c08c8165ab714b, type: 3}
+  m_Name: Usable Item
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
+  worldPrefab: {fileID: 5110442559902247858, guid: 5ff7502ec68d4bc46ae2a944903884a6, type: 3}
+  type: 2
+  fullName: Usable Item
+  shortName: Usable
+  weight: 10
+  size: {x: 1, y: 1}
+  maxDurability: 60
