@@ -36,6 +36,7 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
         RectTransform rect = uiItemObject.AddComponent<RectTransform>();
         Image image = uiItemObject.AddComponent<Image>();
         image.sprite = item.data.texture;
+        image.preserveAspect = true;
         Vector2 originSlot = new Vector2(originSlotIndex - Mathf.Floor((float)originSlotIndex / (float)subInventory.Width) * subInventory.Width, Mathf.Floor((float)originSlotIndex / subInventory.Width));
         rect.anchoredPosition = new Vector2(originSlot.x * Slot.SlotWidth + (Slot.SlotWidth / 2) * item.data.size.x, originSlot.y * -Slot.SlotWidth - (Slot.SlotWidth / 2) * item.data.size.y);
         rect.sizeDelta = Slot.SlotWidth * item.data.size;
