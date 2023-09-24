@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryItem
+public interface IContainer : IContainerData
 {
-    public ItemBasic item;
+
+}
+
+public interface IContainerData
+{
+
 }

@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -202,7 +203,7 @@ GameObject:
   - component: {fileID: 308233280}
   - component: {fileID: 308233282}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TEST OBJECT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,16 +248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9c010423297ff438ec2cdafc788164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  containerAsBasic:
+    uiItem: {fileID: 0}
   container:
-    itemData: {fileID: 0}
+    uiItem: {fileID: 0}
     inventory:
       subInventories: []
-  targetContainer:
-    itemData: {fileID: 0}
-    inventory:
-      subInventories: []
-  targetItem:
-    itemData: {fileID: 0}
   prefab: {fileID: 4663914612206858203, guid: 04a2d2d57d495924aa1742ac4415475e, type: 3}
 --- !u!1 &705507993
 GameObject:
@@ -780,12 +777,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ea5936c5eafc1843bd78dd7293f2124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeCanvas: {fileID: 1019107176}
   slotPrefab: {fileID: 7113125659526021747, guid: 758aaa5120c41f449b3733061bc126c9, type: 3}
   inventoryItemPrefab: {fileID: 5030343582362262651, guid: 9a22d76cf050de242bbe93d7592cb449, type: 3}
   rowPrefab: {fileID: 5250636937411289113, guid: 1060108872e38f54fbd1db1dc6c1e114, type: 3}
   inventoryPrefab: {fileID: 411123795550318581, guid: f98962e256c7cb84599785cedf464e60, type: 3}
   miniInventoryPrefab: {fileID: 4229131494269324511, guid: 1983f4b11651b914a8f303e87b8fc1d6, type: 3}
-  contextMenuPrefab: {fileID: 4663914612206858203, guid: 04a2d2d57d495924aa1742ac4415475e, type: 3}
+  floatingMenuPrefab: {fileID: 7170223789032041718, guid: 2a258cefded0bbb4e94d7b4806de4d3a, type: 3}
+  dropDownMenuPrefab: {fileID: 5098622845787535931, guid: f0e765300d4686b40b763c4256451b36, type: 3}
+  dropOptionPrefab: {fileID: 5113537494255609314, guid: f82ef2c3c70737a4dad531891d7a7c2d, type: 3}
 --- !u!4 &2146972203
 Transform:
   m_ObjectHideFlags: 0
