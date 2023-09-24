@@ -7,12 +7,16 @@ public class Inventory
 {
     public SubInventory[] subInventories;
 
+    public Inventory()
+    {
+
+    }
     public Inventory(SubInventory[] subInventories)
     {
         this.subInventories = subInventories;
     }
 
-    public bool CanAddItem(Item item)
+    public bool CanAddItem(ItemBasic item)
     {
         foreach (SubInventory subInventory in subInventories)
         {
@@ -24,7 +28,7 @@ public class Inventory
         return false;
     }
 
-    public SubInventory FindBestSubInventory(Item item)
+    public SubInventory FindBestSubInventory(ItemBasic item)
     {
         foreach(SubInventory subInventory in subInventories)
         {
@@ -36,11 +40,11 @@ public class Inventory
         return null;
     }
 
-    public void AddItem(Item item)
+    public void AddItem(ItemBasic item)
     {
         if (!CanAddItem(item))
         {
-            Debug.Log($"Failed to add item: {item.itemData.name}");
+            Debug.Log($"Failed to add item: {item.data.name}");
             return;
         }
         SubInventory subInventory = FindBestSubInventory(item);

@@ -9,19 +9,17 @@ public class InventoryGrid
     private static GameObject row;
     private static GameObject inv;
     private static GameObject miniInv;
-    private static GameObject item;
 
-    public static void Init(GameObject _slot, GameObject _item, GameObject _row, GameObject _inv, GameObject _miniInv)
+    public static void Init(GameObject _slot, GameObject _row, GameObject _inv, GameObject _miniInv)
     {
         slot = _slot;
-        item = _item;
         inv = _inv;
         row = _row;
         miniInv = _miniInv;
     }
 
     public static GameObject GenerateInventory(ContainerInventory containerInventory, Inventory inventory, Transform parent)
-    {
+    { 
         GameObject inventoryObject = GameObject.Instantiate(inv, parent);
         inventoryObject.name = "Inventory";
         for (int _row = 0; _row < containerInventory.rows.Length; _row++)
@@ -37,28 +35,18 @@ public class InventoryGrid
                 SubInventory currentSubInventory = inventory.subInventories[_row * _col];
 
                 //UI
-                GameObject subInventoryObj = GameObject.Instantiate(miniInv, rowObj.transform);
-                subInventoryObj.name = "Sub Inventory";
+                GameObject subInventoryObj = SubInventoryUI.Generate(miniInv, rowObj.transform, currentSubInventory);
 
-                GameObject slotsContainer = subInventoryObj.transform.GetChild(0).gameObject;
-                GameObject itemContainer = subInventoryObj.transform.GetChild(1).gameObject;
 
-                slotsContainer.GetComponent<GridLayoutGroup>().constraintCount = currentColumn.width;
 
-                //Component
-                UISubInventory UISubInventory = subInventoryObj.AddComponent<UISubInventory>();
-
-                UISubInventory.inventory = inventory;
-                UISubInventory.subInventory = currentSubInventory;
-
-                Dictionary<int,Item> items = new Dictionary<int, Item>();
+                Dictionary<int, ItemBasic> items = new Dictionary<int, ItemBasic>();
                 for (int i = 0; i < currentColumn.width * currentColumn.height; i++)
                 {
                     //Loop
-                    Slot currentSlot = currentSubInventory.inventory[i];
+                    Slot currentSlot = currentSubInventory.slots[i];
 
                     //UI
-                    GameObject slotObject = GameObject.Instantiate(slot, slotsContainer.transform);
+                    GameObject slotObject = GameObject.Instantiate(slot, subInventoryObj.transform.GetChild(0).transform);
                     slotObject.name = "Slot";
 
                     //Component
@@ -69,31 +57,19 @@ public class InventoryGrid
                     if (currentSlot.item is null) { continue; }
                     if (items.ContainsValue(currentSlot.item))
                     {
-                        Debug.Log("Duplicate");
                         continue;
                     }
                     items.Add(i, currentSlot.item);
                 }
 
                 //Draw Items
-                foreach (KeyValuePair<int, Item> item in items)
+                foreach (KeyValuePair<int, ItemBasic> item in items)
                 {
-                    GameObject uiInventoryItemObject = GameObject.Instantiate(InventoryGrid.item, itemContainer.transform);
-                    if (item.Value.itemData.texture is not null)
-                    {
-                        uiInventoryItemObject.GetComponent<Image>().sprite = item.Value.itemData.texture;
-                    }
-                    
-                    UIInventoryItem newUIInventoryItem;
-                    
-                    if (!uiInventoryItemObject.TryGetComponent(out newUIInventoryItem))
-                    {
-                        newUIInventoryItem = uiInventoryItemObject.AddComponent<UIInventoryItem>();
-                    }
-                    newUIInventoryItem.BuildUIInventoryItem(item.Value, inventory, inventory.subInventories[_row * _col], item.Key);
+                    GameObject newUIItemObject = ItemUI.GenerateUIItem(item.Value, inventory.subInventories[_row * _col], item.Key);
                 }
             }
         }
+        
         return inventoryObject;
     }
 }

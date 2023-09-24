@@ -13,7 +13,7 @@ public class ItemTest : MonoBehaviour
 
     public void CreateAllItems()
     {
-        foreach (ItemSO item in ItemDB.GetValues())
+        foreach (ItemBasicSO item in ItemDB.GetValues())
         {
             Debug.Log($"Created {item.name}");
         }

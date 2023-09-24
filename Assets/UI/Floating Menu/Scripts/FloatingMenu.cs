@@ -16,7 +16,7 @@ public class FloatingMenu : MonoBehaviour
         prefab = floatingMenuUIPrefab;
     }
 
-    public static GameObject CreateMenu()
+    private static GameObject CreateMenu()
     {
         GameObject floatingMenu = Utils.InstantiateToCanvas(prefab);
         //Instantiate(content, floatingMenu.transform);
@@ -25,7 +25,7 @@ public class FloatingMenu : MonoBehaviour
 
     public static GameObject CreateMenu(GameObject content)
     {
-        GameObject floatingMenu = Utils.InstantiateToCanvas(prefab);
+        GameObject floatingMenu = CreateMenu();
         content.transform.SetParent(floatingMenu.transform, false);
         return floatingMenu;
     }

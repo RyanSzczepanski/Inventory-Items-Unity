@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    public static Canvas ActiveCanvas;
+    [SerializeField] private Canvas activeCanvas;
+
     public GameObject slotPrefab;
-    public GameObject inventoryItemPrefab;
     public GameObject rowPrefab;
     public GameObject inventoryPrefab;
     public GameObject miniInventoryPrefab;
-    public GameObject contextMenuPrefab;
+    public GameObject floatingMenuPrefab;
+    public GameObject dropDownMenuPrefab;
+    public GameObject dropOptionPrefab;
 
     private void Awake()
     {
-        InventoryGrid.Init(slotPrefab, inventoryItemPrefab, rowPrefab, inventoryPrefab, miniInventoryPrefab);
-        FloatingMenu.Init(contextMenuPrefab);
+        ActiveCanvas = activeCanvas;
+        InventoryGrid.Init(slotPrefab, rowPrefab, inventoryPrefab, miniInventoryPrefab);
+        FloatingMenu.Init(floatingMenuPrefab);
+        DropDownMenu.Init(dropDownMenuPrefab, dropOptionPrefab);
         Destroy(gameObject);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inspect : MonoBehaviour
 {
-    public static GameObject GenerateView(ItemSO itemData, Transform parent)
+    public static GameObject GenerateView(ItemBasicSO itemData, Transform parent)
     {
         throw new System.NotImplementedException();
     }

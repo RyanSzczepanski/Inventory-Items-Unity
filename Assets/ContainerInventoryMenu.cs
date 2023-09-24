@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ContainerInventoryMenu : MonoBehaviour
 {
-    public ContainerItem item;
+    public ItemContainer item;
 
     public void OnPointerClick(PointerEventData eventData)
     {

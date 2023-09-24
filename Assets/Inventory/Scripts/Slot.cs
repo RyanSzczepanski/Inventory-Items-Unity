@@ -6,7 +6,7 @@ using UnityEngine;
 public class Slot
 {
     public static int SlotWidth = 50;
-    public Item item;
+    public ItemBasic item;
 
     public Slot()
     {
