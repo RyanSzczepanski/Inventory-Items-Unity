@@ -34,21 +34,6 @@ public class ItemBasic
 
     }
 
-    //public virtual void OpenDropDownMenu()
-    //{
-    //    DropDownMenuSettings settings = new DropDownMenuSettings
-    //    {
-    //        destroyOnNewLoad = true,
-    //        creationLocation = CreateLocation.Cursor
-    //    };
-    //    DropDownMenuOptions[] options = new DropDownMenuOptions[]
-    //    {
-    //        new DropDownMenuOptions { optionText = "Inspect", action = delegate() { OpenInspectMenu(); } },
-    //        new DropDownMenuOptions { optionText = "Discard", action = delegate() { uiItem.SubInventory.RemoveItem(this); } },
-    //        new DropDownMenuOptions { optionText = "Open Container", action = delegate() { OpenContextMenu(); } },
-    //    };
-    //    DropDownMenu.CreateMenu(options, settings);
-    //}
     public virtual void OpenDropDownMenu()
     {
         DropDownMenuSettings settings = new DropDownMenuSettings
