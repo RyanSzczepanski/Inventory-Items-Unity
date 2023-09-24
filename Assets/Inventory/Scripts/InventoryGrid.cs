@@ -48,6 +48,7 @@ public class InventoryGrid
                     //UI
                     GameObject slotObject = GameObject.Instantiate(slot, subInventoryObj.transform.GetChild(0).transform);
                     slotObject.name = "Slot";
+                    slotObject.transform.parent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(Slot.SlotWidth, Slot.SlotWidth);
 
                     //Component
                     UISlot UISlot = slotObject.AddComponent<UISlot>();

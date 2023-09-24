@@ -35,11 +35,6 @@ public class ItemContainer : ItemBasic, IContainer
         containerMenu.item = this;
     }
 
-    public void Test()
-    {
-        Debug.Log("TESTING");
-    }
-
     public override void OpenDropDownMenu()
     {
         DropDownMenuSettings settings = new DropDownMenuSettings
@@ -49,6 +44,7 @@ public class ItemContainer : ItemBasic, IContainer
         };
         DropDownMenuOptions[] options = new DropDownMenuOptions[]
         {
+            new DropDownMenuOptions { optionText = "Inspect", action = delegate() { OpenInspectMenu(); } },
             new DropDownMenuOptions { optionText = "Discard", action = delegate() { uiItem.SubInventory.RemoveItem(this); } },
             new DropDownMenuOptions { optionText = "Open Container", action = delegate() { OpenContextMenu(); } },
         };

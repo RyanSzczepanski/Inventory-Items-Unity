@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Inventory
 {
-    public SubInventory[] subInventories;
+    [HideInInspector] public SubInventory[] subInventories;
 
     public Inventory()
     {

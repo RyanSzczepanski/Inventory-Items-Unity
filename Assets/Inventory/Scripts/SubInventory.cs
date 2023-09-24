@@ -39,7 +39,7 @@ public class SubInventory
             slots[i + realitiveItemSlotIndexOffset].item = item;
         }
         SubInventoryEventArgs eventArgs = new SubInventoryEventArgs { item = item, subInventory = this, originIndex = i };
-        item.OnItemAdded.Invoke(this, eventArgs);
+        //item.OnItemAdded?.Invoke(this, eventArgs);
         OnAddItem?.Invoke(this, eventArgs);
     }
     public void AddItem(ItemBasic item, int x, int y)

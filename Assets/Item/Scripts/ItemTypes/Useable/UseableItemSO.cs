@@ -7,8 +7,8 @@ public class UseableItemSO : ItemBasicSO, IUseableData
 {
     public bool CanUse => throw new System.NotImplementedException();
 
-    public new UseableItem CreateItem()
+    public override ItemBasic CreateItem()
     {
-        return new UseableItem(this);
+        return new ItemUseable(this);
     }
 }

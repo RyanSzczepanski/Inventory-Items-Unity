@@ -13,7 +13,6 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
     GameObject temp;
 
 
-
     public ItemBasic Item { get; private set; }
     public SubInventory SubInventory { get; private set; }
 
@@ -59,8 +58,6 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
                 break;
             case PointerEventData.InputButton.Right:
                 Item.OpenDropDownMenu();
-                //subInventory.RemoveItem(item);
-                //Destroy(this.gameObject);
                 break;
         }
     }
