@@ -15,7 +15,7 @@ public class DropDownMenu : MonoBehaviour
 
     public bool destroyOnNewLoad;
     //TODO: Implement DestroyOnNewLoad
-    public static event NewLoad OnNewLoad;
+    public static event NewLoad DestroyMenu;
     public delegate void NewLoad();
 
 
@@ -28,21 +28,11 @@ public class DropDownMenu : MonoBehaviour
     public static GameObject CreateMenu(DropDownMenuOptions[] options, DropDownMenuSettings settings)
     {
         GameObject dropDownMenu = Utils.InstantiateToCanvas(DROP_DOWN_MENU_PREFAB);
-        DropDownMenu newMenu = dropDownMenu.AddComponent<DropDownMenu>();
-        newMenu.destroyOnNewLoad = settings.destroyOnNewLoad;
-        if (OnNewLoad is not null) { OnNewLoad(); }
-        OnNewLoad += newMenu.DestroyDropDown;
-        foreach (DropDownMenuOptions ddmp in options)
-        {
-            GameObject option = Instantiate(OPTION_PREFAB, dropDownMenu.transform);
-            option.GetComponentInChildren<Button>().onClick.AddListener(ddmp.action);
-            option.GetComponentInChildren<Button>().onClick.AddListener(delegate () { newMenu.DestroyDropDown(); });
-            option.GetComponentInChildren<TMP_Text>().text = ddmp.optionText;
-        }
+
         switch (settings.creationLocation)
         {
             case CreateLocation.Cursor:
-                RectTransform rect = newMenu.GetComponent<RectTransform>();
+                RectTransform rect = dropDownMenu.GetComponent<RectTransform>();
                 rect.pivot = new Vector2(0, 1);
                 rect.anchorMin = new Vector2(0, 1);
                 rect.anchorMax = new Vector2(0, 0);
@@ -52,15 +42,33 @@ public class DropDownMenu : MonoBehaviour
             default:
                 break;
         }
+
+        DropDownMenu newMenu = dropDownMenu.AddComponent<DropDownMenu>();
+        newMenu.destroyOnNewLoad = settings.destroyOnNewLoad;
+        if (DestroyMenu is not null) { DestroyMenu(); }
+        DestroyMenu += newMenu.DestroyDropDown;
+        foreach (DropDownMenuOptions ddmp in options)
+        {
+            GameObject option = Instantiate(OPTION_PREFAB, dropDownMenu.transform);
+            option.GetComponentInChildren<Button>().onClick.AddListener(ddmp.action);
+            option.GetComponentInChildren<Button>().onClick.AddListener(delegate () { newMenu.DestroyDropDown(); });
+            option.GetComponentInChildren<TMP_Text>().text = ddmp.optionText;
+        }
+        
         return dropDownMenu;
     }
-    public static void Test()
+
+    private void Update()
     {
-        Debug.Log("OnClick");
+        if(Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        {
+            DestroyMenu();
+        }
     }
+
     public void DestroyDropDown()
     {
-        OnNewLoad -= DestroyDropDown;
+        DestroyMenu -= DestroyDropDown;
         Destroy(this.gameObject);
     }
 }

@@ -105,8 +105,6 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
                     return;
                 }
             }
-
-
             targetSubInventory.SubInventory.TryMoveItem(Item, SubInventory, slot.x, slot.y);
         }
     }
