@@ -237,8 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container:
     uiItem: {fileID: 0}
-    inventory:
-      subInventories: []
+    arrangements: []
   prefab: {fileID: 7170223789032041718, guid: 2a258cefded0bbb4e94d7b4806de4d3a, type: 3}
 --- !u!1 &705507993
 GameObject:
@@ -778,7 +777,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2146972201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 479.29248, y: 540.37787, z: -392.9237}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

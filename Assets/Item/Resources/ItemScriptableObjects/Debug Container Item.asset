@@ -25,3 +25,8 @@ MonoBehaviour:
     - columns:
       - width: 20
         height: 20
+  <Arrangement>k__BackingField:
+    arrangementDirection: 0
+    arrangementAlignment: 0
+    childArrangements: []
+    subInventory: {x: 20, y: 20}

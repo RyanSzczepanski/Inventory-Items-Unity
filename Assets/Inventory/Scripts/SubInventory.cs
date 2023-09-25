@@ -7,15 +7,15 @@ using UnityEngine;
 public class SubInventory
 {
     public delegate void AddItemHandler(System.Object sender, SubInventoryEventArgs e);
-    public AddItemHandler OnAddItem;
+    public event AddItemHandler OnAddItem;
     public delegate void RemoveItemHandler(System.Object sender, SubInventoryEventArgs e);
-    public RemoveItemHandler OnRemoveItem;
+    public event RemoveItemHandler OnRemoveItem;
 
     public int Width { get; private set; }
     public int Height { get; private set; }
 
-    [HideInInspector] public Inventory Inventory { get; private set; }
-    [HideInInspector] public SubInventoryUI UISubInventory { get; set; }
+    public Inventory Inventory { get; private set; }
+    public SubInventoryUI UISubInventory { get; set; }
 
     public Slot[] slots;
 

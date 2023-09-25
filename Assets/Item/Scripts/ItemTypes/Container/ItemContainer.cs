@@ -7,24 +7,24 @@ public class ItemContainer : ItemBasic, IContainer
 {
     public new readonly ItemContainerSO data;
     public Inventory inventory;
+    public Arrangement[] arrangements;
+
+    public Arrangement Arrangement { get; private set; }
 
     public ItemContainer(ItemContainerSO itemSO) : base(itemSO)
     {
+        Arrangement = itemSO.Arrangement;
+        inventory = new Inventory(this);
+        arrangements = Arrangement.TreeToArray;
         data = itemSO;
-        inventory = new Inventory();
-        List<SubInventory> subInventories = new List<SubInventory>();
-        for (int _row = 0; _row < itemSO.containerInventory.rows.Length; _row++)
-        {
-            InventoryRows currentRow = itemSO.containerInventory.rows[_row];
-
-            for (int _col = 0; _col < currentRow.columns.Length; _col++)
-            {
-                InventoryColumns currentColumn = currentRow.columns[_col];
-
-                subInventories.Add(new SubInventory(currentColumn.width, currentColumn.height, inventory));
-            } 
-        }
-        inventory.subInventories = subInventories.ToArray();
+        //List<SubInventory> subInventories = new List<SubInventory>();
+        //foreach (var item in arrangements)
+        //{
+        //    if (item.HasSubInventory)
+        //    {
+        //        subInventories.Add(new SubInventory(item.subInventory.x, item.subInventory.y, inventory));
+        //    }
+        //}
     }
 
     public override void OpenContextMenu()
@@ -54,7 +54,7 @@ public class ItemContainer : ItemBasic, IContainer
     public /*override*/ GameObject GenerateContextView()
     {
         //ItemContainerSO _itemData = data;
-        GameObject content = InventoryGrid.GenerateInventory(data.containerInventory, inventory, null);
+        GameObject content = InventoryGrid.GenerateInventory(data, inventory, null);
 
         return content;
     }

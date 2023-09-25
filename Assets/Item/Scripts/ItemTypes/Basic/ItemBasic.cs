@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 [System.Serializable]
 public class ItemBasic
 {
-    public readonly ItemBasicSO data;
+    public /*readonly*/ ItemBasicSO data;
 
     public delegate void ItemAddedHandler(System.Object sender, SubInventoryEventArgs args);
     public ItemAddedHandler OnItemAdded;

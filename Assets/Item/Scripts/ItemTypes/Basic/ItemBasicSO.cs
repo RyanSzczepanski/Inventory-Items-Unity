@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Assets/Item")]
+[System.Serializable]
 public class ItemBasicSO : ScriptableObject
 {
     public Sprite texture;

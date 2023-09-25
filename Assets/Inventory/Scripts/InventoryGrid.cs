@@ -18,33 +18,45 @@ public class InventoryGrid
         miniInv = _miniInv;
     }
 
-    public static GameObject GenerateInventory(ContainerInventory containerInventory, Inventory inventory, Transform parent)
-    { 
+    public static GameObject GenerateInventory(IContainerData containerData, Inventory inventory, Transform parent)
+    {
         GameObject inventoryObject = GameObject.Instantiate(inv, parent);
         inventoryObject.name = "Inventory";
-        for (int _row = 0; _row < containerInventory.rows.Length; _row++)
+        //TODO: make multi sub inventory work
+        foreach (var item in containerData.Arrangement.TreeToArray)
         {
-            InventoryRows currentRow = containerInventory.rows[_row];
-            GameObject rowObj = GameObject.Instantiate(row, inventoryObject.transform);
-            rowObj.name = "Row";
-
-            for (int _col = 0; _col < currentRow.columns.Length; _col++)
+            int subInventoryIndex = 0;
+            GameObject currentObject = inventoryObject;
+            Transform currentParent = inventoryObject.transform;
+            if (!item.IsLeaf)
             {
-                //Loop
-                InventoryColumns currentColumn = currentRow.columns[_col];
-                SubInventory currentSubInventory = inventory.subInventories[_row * _col];
-
-                //UI
-                GameObject subInventoryObj = SubInventoryUI.Generate(miniInv, rowObj.transform, currentSubInventory);
-
-
+                if (item.arrangementDirection == ArrangementDirection.Horizontal)
+                {
+                    currentObject = GameObject.Instantiate(row, currentParent);
+                    currentObject.name = "Row";
+                    currentParent = currentObject.transform;
+                }
+                else
+                {
+                    //currentObject = GameObject.Instantiate(column, currentParent);
+                    //currentObject.name = "Column";
+                    //currentParent = currentObject.transform;
+                }
+                continue;
+            }
+            if (item.HasSubInventory)
+            {
+                SubInventory currentSubInventory = inventory.SubInventories[subInventoryIndex];
+                GameObject subInventoryObj = SubInventoryUI.Generate(miniInv, currentParent, currentSubInventory);
+                subInventoryIndex++;
 
                 Dictionary<int, ItemBasic> items = new Dictionary<int, ItemBasic>();
-                for (int i = 0; i < currentColumn.width * currentColumn.height; i++)
+                for (int i = 0; i < currentSubInventory.slots.Length; i++)
                 {
                     //Loop
                     Slot currentSlot = currentSubInventory.slots[i];
 
+                    //Refactor Removes this from being relevant so it will stay ugly
                     //UI
                     GameObject slotObject = GameObject.Instantiate(slot, subInventoryObj.transform.GetChild(0).transform);
                     slotObject.name = "Slot";
@@ -64,13 +76,12 @@ public class InventoryGrid
                 }
 
                 //Draw Items
-                foreach (KeyValuePair<int, ItemBasic> item in items)
+                foreach (KeyValuePair<int, ItemBasic> itemkvp in items)
                 {
-                    GameObject newUIItemObject = ItemUI.GenerateUIItem(item.Value, inventory.subInventories[_row * _col], item.Key);
+                    GameObject newUIItemObject = ItemUI.GenerateUIItem(itemkvp.Value, currentSubInventory, itemkvp.Key);
                 }
             }
         }
-        
         return inventoryObject;
     }
 }
@@ -78,17 +89,17 @@ public class InventoryGrid
 [System.Serializable]
 public class ContainerInventory
 {
-    public InventoryRows[] rows;
+    public InventoryRow[] rows;
 }
 
 [System.Serializable]
-public class InventoryRows
+public class InventoryRow
 {
-    public InventoryColumns[] columns;
+    public InventoryColumn[] columns;
 }
 
 [System.Serializable]
-public class InventoryColumns
+public class InventoryColumn
 {
     public int width;
     public int height;

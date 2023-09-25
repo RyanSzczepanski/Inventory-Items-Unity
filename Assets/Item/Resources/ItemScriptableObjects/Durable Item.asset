@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645bab872a0f5bb49b372e7273afe963, type: 3}
   m_Name: Durable Item
   m_EditorClassIdentifier: 
-  texture: {fileID: 0}
+  texture: {fileID: 21300000, guid: 4c5261576fbd05641a1f40a656dcd13c, type: 3}
   itemPrefab: {fileID: 0}
   worldPrefab: {fileID: 0}
   type: 0

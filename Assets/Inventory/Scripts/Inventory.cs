@@ -5,20 +5,26 @@ using UnityEngine;
 [System.Serializable]
 public class Inventory
 {
-    [HideInInspector] public SubInventory[] subInventories;
+    public SubInventory[] SubInventories { get; private set; }
 
-    public Inventory()
+    public Inventory(IContainer container)
     {
-
+        Vector2Int[] subInvs = container.Arrangement.SubInventories;
+        SubInventories = new SubInventory[subInvs.Length];
+        for (int i = 0; i < subInvs.Length; i++)
+        {
+            SubInventories[i] = new SubInventory(subInvs[i].x, subInvs[i].y, this);
+        }
     }
+
     public Inventory(SubInventory[] subInventories)
     {
-        this.subInventories = subInventories;
+        this.SubInventories = subInventories;
     }
 
     public bool CanAddItem(ItemBasic item)
     {
-        foreach (SubInventory subInventory in subInventories)
+        foreach (SubInventory subInventory in SubInventories)
         {
             if (subInventory.CanAddItem(item))
             {
@@ -30,7 +36,7 @@ public class Inventory
 
     public SubInventory FindBestSubInventory(ItemBasic item)
     {
-        foreach(SubInventory subInventory in subInventories)
+        foreach (SubInventory subInventory in SubInventories)
         {
             if (subInventory.CanAddItem(item))
             {
