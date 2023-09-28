@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public static Canvas ActiveCanvas;
     [SerializeField] private Canvas activeCanvas;
 
+    public GameObject itemUIPrefab;
     public GameObject slotPrefab;
     public GameObject rowPrefab;
     public GameObject inventoryPrefab;
@@ -20,7 +21,8 @@ public class UIManager : MonoBehaviour
         ActiveCanvas = activeCanvas;
         InventoryGrid.Init(slotPrefab, rowPrefab, inventoryPrefab, miniInventoryPrefab);
         FloatingMenu.Init(floatingMenuPrefab);
-        DropDownMenu.Init(dropDownMenuPrefab, dropOptionPrefab);
+        ContextMenu.Init(dropDownMenuPrefab, dropOptionPrefab);
+        ItemUI.Init(itemUIPrefab);
         Destroy(gameObject);
     }
 }

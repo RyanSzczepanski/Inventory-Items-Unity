@@ -28,19 +28,24 @@ public class SubInventoryUI : MonoBehaviour
         SubInventoryUI UISubInventory = subInventoryObj.AddComponent<SubInventoryUI>();
 
         UISubInventory.SubInventory = subInventory;
-        UISubInventory.SubInventory.UISubInventory = UISubInventory;
+        //UISubInventory.SubInventory.UISubInventory = UISubInventory;
         subInventoryObj.SetActive(true);
         return subInventoryObj;
     }
 
+    public void AddItemUI(SubInventoryEventArgs args)
+    {
+        ItemUI.GenerateUIItem(args.item, transform.GetChild(1), args.originIndex);
+    }
+
     private void OnEnable()
     {
-        SubInventory.OnAddItem += ItemUI.GenerateUIItem;
+        SubInventory.OnAddItem += AddItemUI;
         //subInventory.OnRemoveItem += DestroyFunc;
     }
     private void OnDisable()
     {
-        SubInventory.OnAddItem -= ItemUI.GenerateUIItem;
+        SubInventory.OnAddItem -= AddItemUI;
         //subInventory.OnRemoveItem -= DestroyFunc;
     }
 }

@@ -6,9 +6,10 @@ using TMPro;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DropDownMenu : MonoBehaviour
+public class ContextMenu : MonoBehaviour, IPointerClickHandler
 {
     public static GameObject DROP_DOWN_MENU_PREFAB;
     public static GameObject OPTION_PREFAB;
@@ -25,7 +26,7 @@ public class DropDownMenu : MonoBehaviour
         OPTION_PREFAB = ddmoPrefab;
     }
 
-    public static GameObject CreateMenu(DropDownMenuOptions[] options, DropDownMenuSettings settings)
+    public static GameObject CreateMenu(ContextMenuOption[] options, ContextMenuSettings settings)
     {
         GameObject dropDownMenu = Utils.InstantiateToCanvas(DROP_DOWN_MENU_PREFAB);
 
@@ -43,11 +44,11 @@ public class DropDownMenu : MonoBehaviour
                 break;
         }
 
-        DropDownMenu newMenu = dropDownMenu.AddComponent<DropDownMenu>();
+        ContextMenu newMenu = dropDownMenu.AddComponent<ContextMenu>();
         newMenu.destroyOnNewLoad = settings.destroyOnNewLoad;
         if (DestroyMenu is not null) { DestroyMenu(); }
         DestroyMenu += newMenu.DestroyDropDown;
-        foreach (DropDownMenuOptions ddmp in options)
+        foreach (ContextMenuOption ddmp in options)
         {
             GameObject option = Instantiate(OPTION_PREFAB, dropDownMenu.transform);
             option.GetComponentInChildren<Button>().onClick.AddListener(ddmp.action);
@@ -58,26 +59,23 @@ public class DropDownMenu : MonoBehaviour
         return dropDownMenu;
     }
 
-    private void Update()
-    {
-        if(Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
-        {
-            DestroyMenu();
-        }
-    }
-
     public void DestroyDropDown()
     {
         DestroyMenu -= DestroyDropDown;
         Destroy(this.gameObject);
     }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        DestroyMenu();
+    }
 }
-public struct DropDownMenuOptions
+public struct ContextMenuOption
 {
     public string optionText;
     public UnityAction action;
 }
-public struct DropDownMenuSettings
+public struct ContextMenuSettings
 {
     public bool destroyOnNewLoad;
     public CreateLocation creationLocation;
@@ -88,11 +86,3 @@ public enum CreateLocation
     Cursor,
     Center,
 }
-
-
-public class EV : EventArgs
-{
-    public ItemBasic item;
-    public SubInventory subInventory;
-}
-

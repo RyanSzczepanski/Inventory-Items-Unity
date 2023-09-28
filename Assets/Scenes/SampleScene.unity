@@ -236,7 +236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container:
-    uiItem: {fileID: 0}
     arrangements: []
   prefab: {fileID: 7170223789032041718, guid: 2a258cefded0bbb4e94d7b4806de4d3a, type: 3}
 --- !u!1 &705507993
@@ -762,6 +761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeCanvas: {fileID: 1019107176}
+  itemUIPrefab: {fileID: 5030343582362262651, guid: fb3cf31931bb8f441a4f295c84b6eae4, type: 3}
   slotPrefab: {fileID: 7113125659526021747, guid: 758aaa5120c41f449b3733061bc126c9, type: 3}
   rowPrefab: {fileID: 5250636937411289113, guid: 1060108872e38f54fbd1db1dc6c1e114, type: 3}
   inventoryPrefab: {fileID: 411123795550318581, guid: f98962e256c7cb84599785cedf464e60, type: 3}

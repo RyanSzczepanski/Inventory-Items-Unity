@@ -17,45 +17,34 @@ public class ItemContainer : ItemBasic, IContainer
         inventory = new Inventory(this);
         arrangements = Arrangement.TreeToArray;
         data = itemSO;
-        //List<SubInventory> subInventories = new List<SubInventory>();
-        //foreach (var item in arrangements)
-        //{
-        //    if (item.HasSubInventory)
-        //    {
-        //        subInventories.Add(new SubInventory(item.subInventory.x, item.subInventory.y, inventory));
-        //    }
-        //}
     }
 
-    public override void OpenContextMenu()
+    public void OpenFloatingWindowInventory()
     {
-        GameObject newMenu = FloatingMenu.CreateMenu(GenerateContextView());
+        GameObject newMenu = FloatingMenu.CreateMenu(GenerateInventoryContent());
         newMenu.GetComponent<FloatingMenu>().title.text = data.name;
-        ContainerInventoryMenu containerMenu = newMenu.AddComponent<ContainerInventoryMenu>();
-        containerMenu.item = this;
     }
 
-    public override void OpenDropDownMenu()
+    public /*override*/ GameObject GenerateInventoryContent()
     {
-        DropDownMenuSettings settings = new DropDownMenuSettings
-        {
-            destroyOnNewLoad = true,
-            creationLocation = CreateLocation.Cursor
-        };
-        DropDownMenuOptions[] options = new DropDownMenuOptions[]
-        {
-            new DropDownMenuOptions { optionText = "Inspect", action = delegate() { OpenInspectMenu(); } },
-            new DropDownMenuOptions { optionText = "Discard", action = delegate() { uiItem.SubInventory.RemoveItem(this); } },
-            new DropDownMenuOptions { optionText = "Open Container", action = delegate() { OpenContextMenu(); } },
-        };
-        DropDownMenu.CreateMenu(options, settings);
-    }
-
-    public /*override*/ GameObject GenerateContextView()
-    {
-        //ItemContainerSO _itemData = data;
         GameObject content = InventoryGrid.GenerateInventory(data, inventory, null);
-
         return content;
+    }
+
+    public override ContextMenuOption[] GetContextMenuOptions()
+    {
+        List<ContextMenuOption> contextMenuOptions = new List<ContextMenuOption>();
+        ContextMenuOption[] specificContextMenuOptions = new ContextMenuOption[]
+        {
+            new ContextMenuOption()
+            {
+                optionText = "Open Container",
+                action = delegate { OpenFloatingWindowInventory(); }
+
+            },
+        };
+        contextMenuOptions.AddRange(base.GetContextMenuOptions());
+        contextMenuOptions.AddRange(specificContextMenuOptions);
+        return contextMenuOptions.ToArray();
     }
 }

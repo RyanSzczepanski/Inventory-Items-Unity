@@ -10,37 +10,47 @@ using UnityEngine.UI;
 
 public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginDragHandler, IEndDragHandler
 {
-    GameObject temp;
-
-
     public ItemBasic Item { get; private set; }
-    public SubInventory SubInventory { get; private set; }
+    private GameObject draggingObject;
+    private static GameObject ITEM_UI_PREFAB;
+
+    public static void Init(GameObject itemUI)
+    {
+        ITEM_UI_PREFAB = itemUI;
+    }
 
     private void OnEnable()
     {
-        //Item.OnItemAdded += 
+        Item.OnItemRemoved += DestroyItemUI;
+    }
+    private void OnDisable()
+    {
+        Item.OnItemRemoved -= DestroyItemUI;
     }
 
-    public static void GenerateUIItem(System.Object sender, SubInventoryEventArgs args)
+    public static GameObject GenerateUIItem(ItemBasic item, Transform parent, int originSlotIndex)
     {
-        GenerateUIItem(args.item, args.subInventory, args.originIndex);
-    }
-    public static GameObject GenerateUIItem(ItemBasic item, SubInventory subInventory, int originSlotIndex)
-    {
-        GameObject uiItemObject = new GameObject(item.data.fullName);
-        uiItemObject.transform.SetParent(subInventory.UISubInventory.transform.GetChild(1));
-        ItemUI uiItem = uiItemObject.AddComponent<ItemUI>();
-        uiItem.Item = item;
-        uiItem.SubInventory = subInventory;
-        item.uiItem = uiItem;
-        RectTransform rect = uiItemObject.AddComponent<RectTransform>();
-        Image image = uiItemObject.AddComponent<Image>();
-        image.sprite = item.data.texture;
-        image.preserveAspect = true;
+        GameObject itemUIObject = Instantiate(ITEM_UI_PREFAB, parent);
+        itemUIObject.name = item.data.fullName;
+        //ITEM UI
+        ItemUI itemUI = itemUIObject.GetComponent<ItemUI>();
+        itemUI.Item = item;
+        itemUI.enabled = true;
+        //Icon
+        Image icon = itemUIObject.transform.GetChild(1).GetComponent<Image>();
+        icon.sprite = item.data.texture;
+        //RectTransform
+        RectTransform rect = itemUIObject.GetComponent<RectTransform>();
+        SubInventory subInventory = item.SubInventory;
         Vector2 originSlot = new Vector2(originSlotIndex - Mathf.Floor((float)originSlotIndex / (float)subInventory.Width) * subInventory.Width, Mathf.Floor((float)originSlotIndex / subInventory.Width));
         rect.anchoredPosition = new Vector2(originSlot.x * Slot.SlotWidth + (Slot.SlotWidth / 2) * item.data.size.x, originSlot.y * -Slot.SlotWidth - (Slot.SlotWidth / 2) * item.data.size.y);
         rect.sizeDelta = Slot.SlotWidth * item.data.size;
-        return uiItemObject;
+        return itemUIObject;
+    }
+
+    public void DestroyItemUI()
+    {
+        Destroy(this.gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -58,14 +68,14 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
                     $"{Item.data.size}");
                 break;
             case PointerEventData.InputButton.Right:
-                Item.OpenDropDownMenu();
+                Item.OpenContextMenu();
                 break;
         }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        temp.transform.position = eventData.position - new Vector2(this.transform.GetComponent<RectTransform>().rect.width - Slot.SlotWidth * Item.data.size.x, -this.transform.GetComponent<RectTransform>().rect.height + Slot.SlotWidth * Item.data.size.y) / (2 / GetComponentInParent<Canvas>().scaleFactor);
+        draggingObject.transform.position = eventData.position - new Vector2(this.transform.GetComponent<RectTransform>().rect.width - Slot.SlotWidth * Item.data.size.x, -this.transform.GetComponent<RectTransform>().rect.height + Slot.SlotWidth * Item.data.size.y) / (2 / GetComponentInParent<Canvas>().scaleFactor);
 
         SubInventoryUI targetSubInventory = GetSubInventoryUnderMouse(eventData);
         if(targetSubInventory is not null)
@@ -76,17 +86,17 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
             Vector2Int slot = new Vector2Int((int)Mathf.Clamp(Mathf.Floor(localHoverItemPositon.x / Slot.SlotWidth), 0, targetSubInventory.SubInventory.Width - Item.data.size.x), (int)Mathf.Clamp(Mathf.Floor((-localHoverItemPositon.y) / Slot.SlotWidth), 0, targetSubInventory.SubInventory.Height - Item.data.size.y));
             Vector2 slotPosition = new Vector2(slot.x * Slot.SlotWidth + Slot.SlotWidth / 2 * Item.data.size.x, slot.y * -Slot.SlotWidth - Slot.SlotWidth / 2 * Item.data.size.y);
             
-            temp.transform.position = (Vector2)targetSubInventory.transform.position + slotPosition * GetComponentInParent<Canvas>().scaleFactor;
+            draggingObject.transform.position = (Vector2)targetSubInventory.transform.position + slotPosition * GetComponentInParent<Canvas>().scaleFactor;
         }
 
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        temp = Utils.InstantiateToCanvas(this.gameObject);
+        draggingObject = ItemUI.GenerateUIItem(Item, null, 0);
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        Destroy(temp);
+        Destroy(draggingObject);
         SubInventoryUI targetSubInventory = GetSubInventoryUnderMouse(eventData);
         if (targetSubInventory is not null)
         {
@@ -106,7 +116,7 @@ public class ItemUI : MonoBehaviour, IDragHandler, IPointerClickHandler, IBeginD
                     return;
                 }
             }
-            targetSubInventory.SubInventory.TryMoveItem(Item, SubInventory, slot.x, slot.y);
+            targetSubInventory.SubInventory.TryMoveItem(Item, Item.SubInventory, slot.x, slot.y);
         }
     }
 

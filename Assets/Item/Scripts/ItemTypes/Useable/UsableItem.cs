@@ -18,19 +18,20 @@ public class ItemUseable : ItemBasic, IUseable
         throw new System.NotImplementedException();
     }
 
-    public override void OpenDropDownMenu()
+    public override ContextMenuOption[] GetContextMenuOptions()
     {
-        DropDownMenuSettings settings = new DropDownMenuSettings
+        List<ContextMenuOption> contextMenuOptions  = new List<ContextMenuOption>();
+        ContextMenuOption[] specificContextMenuOptions = new ContextMenuOption[]
         {
-            destroyOnNewLoad = true,
-            creationLocation = CreateLocation.Cursor
+            new ContextMenuOption()
+            {
+                optionText = "Use",
+                action = delegate { TryUse(); }
+
+            },
         };
-        DropDownMenuOptions[] options = new DropDownMenuOptions[]
-        {
-            new DropDownMenuOptions { optionText = "Inspect", action = delegate() { OpenInspectMenu(); } },
-            new DropDownMenuOptions { optionText = "Discard", action = delegate() { uiItem.SubInventory.RemoveItem(this); } },
-            new DropDownMenuOptions { optionText = "Use", action = delegate() { TryUse(); } },
-        };
-        DropDownMenu.CreateMenu(options, settings);
+        contextMenuOptions.AddRange(base.GetContextMenuOptions());
+        contextMenuOptions.AddRange(specificContextMenuOptions);
+        return contextMenuOptions.ToArray();
     }
 }

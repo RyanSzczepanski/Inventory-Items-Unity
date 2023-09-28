@@ -23,6 +23,6 @@ public class InventoryTest : MonoBehaviour
 
     public void OpenDebugContainer()
     {
-        container.OpenContextMenu();
+        container.OpenFloatingWindowInventory();
     }
 }

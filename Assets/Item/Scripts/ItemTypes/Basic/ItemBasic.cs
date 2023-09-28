@@ -7,20 +7,43 @@ using UnityEngine.EventSystems;
 [System.Serializable]
 public class ItemBasic
 {
-    public /*readonly*/ ItemBasicSO data;
+    public readonly ItemBasicSO data;
 
-    public delegate void ItemAddedHandler(System.Object sender, SubInventoryEventArgs args);
+    public delegate void ItemAddedHandler();
     public ItemAddedHandler OnItemAdded;
-    public delegate void ItemRemovedHandler(System.Object sender, SubInventoryEventArgs args);
+    public delegate void ItemRemovedHandler();
     public ItemAddedHandler OnItemRemoved;
 
-    [HideInInspector] public ItemUI uiItem;
-
+    //TODO: Value Never Set
     public SubInventory SubInventory { get; private set; }
 
     public ItemBasic(ItemBasicSO itemSO)
     {
         data = itemSO;
+
+    }
+
+    public void AddToSubInventory(SubInventory subInventory)
+    {
+        SubInventory = subInventory;
+    }
+
+    public virtual ContextMenuOption[] GetContextMenuOptions()
+    {
+        return new ContextMenuOption[]
+        {
+            new ContextMenuOption()
+            {
+                optionText = "Inspect",
+                action = OpenInspectMenu
+
+            },
+            new ContextMenuOption()
+            {
+                optionText = "Discard",
+                action = delegate { SubInventory.RemoveItem(this); }
+            }
+        };
     }
 
     public virtual void OpenInspectMenu()
@@ -30,22 +53,11 @@ public class ItemBasic
 
     public virtual void OpenContextMenu()
     {
-        throw new NotImplementedException();
-
-    }
-
-    public virtual void OpenDropDownMenu()
-    {
-        DropDownMenuSettings settings = new DropDownMenuSettings
+        ContextMenuSettings settings = new ContextMenuSettings
         {
             destroyOnNewLoad = true,
             creationLocation = CreateLocation.Cursor
         };
-        DropDownMenuOptions[] options = new DropDownMenuOptions[]
-        {
-            new DropDownMenuOptions { optionText = "Inspect", action = delegate () { OpenContextMenu(); } },
-            new DropDownMenuOptions { optionText = "Discard", action = delegate () { uiItem.SubInventory.RemoveItem(this); } },
-        };
-        DropDownMenu.CreateMenu(options, settings);
+        ContextMenu.CreateMenu(GetContextMenuOptions(), settings);
     }
 }

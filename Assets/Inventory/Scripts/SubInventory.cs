@@ -6,16 +6,16 @@ using UnityEngine;
 [System.Serializable]
 public class SubInventory
 {
-    public delegate void AddItemHandler(System.Object sender, SubInventoryEventArgs e);
+    public delegate void AddItemHandler(SubInventoryEventArgs e);
     public event AddItemHandler OnAddItem;
-    public delegate void RemoveItemHandler(System.Object sender, SubInventoryEventArgs e);
+    public delegate void RemoveItemHandler();
     public event RemoveItemHandler OnRemoveItem;
 
     public int Width { get; private set; }
     public int Height { get; private set; }
 
     public Inventory Inventory { get; private set; }
-    public SubInventoryUI UISubInventory { get; set; }
+    //public SubInventoryUI UISubInventory { get; set; }
 
     public Slot[] slots;
 
@@ -38,9 +38,9 @@ public class SubInventory
         {
             slots[i + realitiveItemSlotIndexOffset].item = item;
         }
+        item.AddToSubInventory(this);
         SubInventoryEventArgs eventArgs = new SubInventoryEventArgs { item = item, subInventory = this, originIndex = i };
-        //item.OnItemAdded?.Invoke(this, eventArgs);
-        OnAddItem?.Invoke(this, eventArgs);
+        OnAddItem?.Invoke(eventArgs);
     }
     public void AddItem(ItemBasic item, int x, int y)
     {
@@ -51,7 +51,7 @@ public class SubInventory
         }
         int originIndex = x + y * Width;
         SubInventoryEventArgs eventArgs = new SubInventoryEventArgs { item = item, subInventory = this, originIndex = originIndex };
-        OnAddItem?.Invoke(this, eventArgs);
+        OnAddItem?.Invoke(eventArgs);
     }
 
     public bool CanAddItem(ItemBasic item)
@@ -220,9 +220,10 @@ public class SubInventory
             }
         }
         //This shouldnt be handled here
-        GameObject.Destroy(item.uiItem.gameObject);
+        //GameObject.Destroy(item.uiItem.gameObject);
         SubInventoryEventArgs eventArgs = new SubInventoryEventArgs { item = item, subInventory = this, originIndex = GetItemOriginSlot(item)};
-        OnRemoveItem?.Invoke(this, eventArgs);
+        OnRemoveItem?.Invoke();
+        item.OnItemRemoved?.Invoke();
     }
 
     public bool TryMoveItem(ItemBasic targetItem, SubInventory originSubInventory)

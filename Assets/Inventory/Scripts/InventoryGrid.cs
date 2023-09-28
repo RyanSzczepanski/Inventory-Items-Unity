@@ -78,7 +78,7 @@ public class InventoryGrid
                 //Draw Items
                 foreach (KeyValuePair<int, ItemBasic> itemkvp in items)
                 {
-                    GameObject newUIItemObject = ItemUI.GenerateUIItem(itemkvp.Value, currentSubInventory, itemkvp.Key);
+                    GameObject newUIItemObject = ItemUI.GenerateUIItem(itemkvp.Value, subInventoryObj.transform.GetChild(1), itemkvp.Key);
                 }
             }
         }
